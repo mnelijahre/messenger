@@ -4,19 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bazinga Messenger</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div>
-        <div>
+    <div id="formDiv">
+        <div class="formRow">
             <h4>Username</h4>
             <input type="text" id="usernameInput">
         </div>
-        <div>
+        <div class="formRow">
             <h4>Password</h4>
             <input type="text" id="passwordInput">
         </div>
-        <button id="registerBtn">Register</button>
-        <button id="loginBtn">Login</button>
+        <div class="formRow2">
+            <button id="registerBtn">Register</button>
+            <button id="loginBtn">Login</button>
+        </div>
+
     </div>
 </body>
 
@@ -80,8 +84,8 @@
                             window.location.href = "message.html";
 
                         }else{
-                        alert("wrong password");
-                    }
+                            alert("wrong password");
+                        }
                     }
                 }
                 
