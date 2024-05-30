@@ -6,6 +6,83 @@
     <title>Bazinga Messenger</title>
 </head>
 <body>
-    
+    <div>
+        <div>
+            <h4>Username</h4>
+            <input type="text" id="usernameInput">
+        </div>
+        <div>
+            <h4>Password</h4>
+            <input type="text" id="passwordInput">
+        </div>
+        <button id="registerBtn">Register</button>
+        <button id="loginBtn">Login</button>
+    </div>
 </body>
+
+<script type="module">
+    
+    /*=====================================================*/
+
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import {getDatabase, set, get, update, remove, ref, child} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+    const firebaseConfig = {
+      apiKey: "AIzaSyD-FDKk4cgdYMnkjOqCD6Lm5DUgAeh9Qpc",
+      authDomain: "tutorialwebsite-7cd7e.firebaseapp.com",
+      databaseURL: "https://tutorialwebsite-7cd7e-default-rtdb.firebaseio.com",
+      projectId: "tutorialwebsite-7cd7e",
+      storageBucket: "tutorialwebsite-7cd7e.appspot.com",
+      messagingSenderId: "122930750292",
+      appId: "1:122930750292:web:5f982f3dda769246339ec1"
+    };
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase();
+    const dbref = ref(db);
+
+    /*=====================================================*/
+
+    var usernameInput = document.querySelector("#usernameInput");
+    var passwordInput = document.querySelector("#passwordInput");
+    var registerBtn = document.querySelector('#registerBtn');
+    var loginBtn = document.querySelector('#loginBtn');
+
+    function register(){
+        if (usernameInput.value == "" && passwordInput.value == ""){
+            alert("No blank inputs please");
+        }else {
+            get(child(dbref, "Accounts/" + usernameInput.value.toLowerCase())).then(
+                (snapshop)=>{
+                    if (snapshop.exists()){
+                        alert("Existing username");
+                    }else{
+                        set(child(dbref, "Accounts/" + usernameInput.value.toLowerCase()),{
+                            password: passwordInput.value
+                        })
+                    }
+                    usernameInput.value = "";
+                    passwordInput.value = "";
+                }
+            )
+        }
+    }
+
+    function login(){
+        get(child(dbref, "Accounts/" + usernameInput.value.toLowerCase())).then(
+            (snapshot)=>{
+                if (snapshot.exists()){
+                    console.log("Exists");
+                    console.log(passwordInput.value);
+                    if (passwordInput.value == snapshot.val().password){
+                        console.log("Success");
+                    }
+                }
+            }
+        )
+    }
+
+    registerBtn.addEventListener('click',register);
+    loginBtn.addEventListener('click', login);
+
+
+  </script>
 </html>
