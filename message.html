@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1 id="pageHeader">Works</h1>
+
+    <script type="module">
+    
+        /*=====================================================*/
+    
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import {getDatabase, set, get, update, remove, ref, child} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+        const firebaseConfig = {
+          apiKey: "AIzaSyD-FDKk4cgdYMnkjOqCD6Lm5DUgAeh9Qpc",
+          authDomain: "tutorialwebsite-7cd7e.firebaseapp.com",
+          databaseURL: "https://tutorialwebsite-7cd7e-default-rtdb.firebaseio.com",
+          projectId: "tutorialwebsite-7cd7e",
+          storageBucket: "tutorialwebsite-7cd7e.appspot.com",
+          messagingSenderId: "122930750292",
+          appId: "1:122930750292:web:5f982f3dda769246339ec1"
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase();
+        const dbref = ref(db);
+    
+        /*=====================================================*/
+        var pageHeader = document.querySelector("#pageHeader");
+        pageHeader.innerHTML = "Welcome " + localStorage.getItem("user");
+
+
+        
+
+        </script>
+</body>
+</html>

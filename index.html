@@ -69,16 +69,26 @@
     function login(){
         get(child(dbref, "Accounts/" + usernameInput.value.toLowerCase())).then(
             (snapshot)=>{
+                console.log(snapshot.val);//?
+
+
                 if (snapshot.exists()){
-                    console.log("Exists");
-                    console.log(passwordInput.value);
                     if (passwordInput.value == snapshot.val().password){
-                        console.log("Success");
+                        console.log("Logged")
+                        localStorage.setItem("user", usernameInput.value.toLowerCase());
+                        window.location.href = "message.html";
+
+                    }else{
+                        alert("Wrong password");
                     }
                 }
             }
         )
+
     }
+
+    var testBtn = document.querySelector("#test");
+
 
     registerBtn.addEventListener('click',register);
     loginBtn.addEventListener('click', login);
