@@ -69,7 +69,6 @@
     function login(){
         get(child(dbref, "Accounts/" + usernameInput.value.toLowerCase())).then(
             (snapshot)=>{
-                console.log(snapshot.val);//?
 
 
                 if (snapshot.exists()){
