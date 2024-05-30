@@ -48,7 +48,7 @@
 
     function register(){
         if (usernameInput.value == "" && passwordInput.value == ""){
-            alert("No blank inputs please");
+            alert("Must have at least one character");
         }else {
             get(child(dbref, "Accounts/" + usernameInput.value.toLowerCase())).then(
                 (snapshop)=>{
@@ -67,23 +67,27 @@
     }
 
     function login(){
-        get(child(dbref, "Accounts/" + usernameInput.value.toLowerCase())).then(
-            (snapshot)=>{
+        if (usernameInput.value == "" && passwordInput.value == ""){
+            alert("Must have at least one character");
+        }else {
+            var exists = false;
+            get(child(dbref, "Accounts/" + usernameInput.value.toLowerCase())).then(
+                (snapshot)=>{
+                    if (snapshot.exists()){
+                        exists = true;
+                        if (passwordInput.value == snapshot.val().password){
+                            console.log("Logged")
+                            localStorage.setItem("user", usernameInput.value.toLowerCase());
+                            window.location.href = "message.html";
 
-
-                if (snapshot.exists()){
-                    if (passwordInput.value == snapshot.val().password){
-                        console.log("Logged")
-                        localStorage.setItem("user", usernameInput.value.toLowerCase());
-                        window.location.href = "message.html";
-
-                    }else{
-                        alert("Wrong password");
+                        }
                     }
                 }
+            )
+            if (!exists){
+                alert("user does not exist");
             }
-        )
-
+        }        
     }
 
     var testBtn = document.querySelector("#test");
