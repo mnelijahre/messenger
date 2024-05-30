@@ -76,7 +76,6 @@
                     if (snapshot.exists()){
                         exists = true;
                         if (passwordInput.value == snapshot.val().password){
-                            console.log("Logged")
                             localStorage.setItem("user", usernameInput.value.toLowerCase());
                             window.location.href = "message.html";
 
