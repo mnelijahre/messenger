@@ -82,10 +82,15 @@
                         }
                     }
                 }
-            )
-            if (!exists){
+                
+            ).then(
+                ()=>{
+                    if (!exists){
                 alert("user does not exist");
             }
+                }
+            )
+            
         }        
     }
 
