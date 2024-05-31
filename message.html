@@ -12,8 +12,11 @@
     <div id="contentHolder">
 
     </div>
-    <input type="text" id="contentInput">
-    <button id="contentSubmitButton">Text</button>
+    <form>
+        <input type="text" id="contentInput">
+        <button id="contentSubmitButton">Send</button>
+    </form>
+
     <script type="module">
     
         /*=====================================================*/
@@ -65,7 +68,7 @@
                             val: temp
                         }).then(
                             update(child(dbrefTwo, "content/"), {
-                        [counter]: contentInput.value
+                        [counter]: localStorage.getItem('user') + " : " + contentInput.value
                     })
                         )
                         
@@ -89,6 +92,7 @@
 
 
         function myRefresh(){
+            contentHolder.innerHTML = "";
             onValue(dbref, (snapshot) => {
             snapshot.forEach((childSnapshot) => {
                 const childKey = childSnapshot.key;
