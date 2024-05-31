@@ -4,16 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <!--<meta http-equiv="refresh" content="2" />-->
+
 </head>
 <body>
     <h1 id="pageHeader">Works</h1>
+    <div id="contentHolder">
 
+    </div>
+    <input type="text" id="contentInput">
+    <button id="contentSubmitButton">Text</button>
     <script type="module">
     
         /*=====================================================*/
     
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import {getDatabase, set, get, update, remove, ref, child} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+        import {getDatabase, set, get, update, remove, ref, child, onValue} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
         const firebaseConfig = {
           apiKey: "AIzaSyD-FDKk4cgdYMnkjOqCD6Lm5DUgAeh9Qpc",
           authDomain: "tutorialwebsite-7cd7e.firebaseapp.com",
@@ -25,15 +31,78 @@
         };
         const app = initializeApp(firebaseConfig);
         const db = getDatabase();
-        const dbref = ref(db);
+        const dbrefTwo = ref(db);
+        const dbref = ref(db, "/content");
+
+        
+    
     
         /*=====================================================*/
         var pageHeader = document.querySelector("#pageHeader");
+        const contentHolder = document.querySelector("#contentHolder");
+        var counter = -1;
         pageHeader.innerHTML = "Welcome " + localStorage.getItem("user");
 
+        const contentInput = document.querySelector("#contentInput");
+        const contentSubmitButton = document.querySelector("#contentSubmitButton");
+        var counter = -1;
 
+
+        function contentSubmit(){
+            get(child(dbrefTwo, "counter/val")).then(
+                
+                (snapshot)=>{
+                    if (snapshot.val() == null){
+                        set(child(dbrefTwo, "counter"),{
+                            val: 1
+                        })
+                    }else{
+                        console.log(snapshot.val());
+                        
+                        counter = snapshot.val();
+                        var temp = 1 + parseInt(counter);
+                        set(child(dbrefTwo, "counter"),{
+                            val: temp
+                        }).then(
+                            update(child(dbrefTwo, "content/"), {
+                        [counter]: contentInput.value
+                    })
+                        )
+                        
+                    }
+                    
+                }
+                
+            ).then(
+                myRefresh()//do something here
+            )
+
+
+            if (contentInput.value == ""){
+                return;
+            }
+
+            
+        }
+
+        contentSubmitButton.addEventListener('click', contentSubmit);
+
+
+        function myRefresh(){
+            onValue(dbref, (snapshot) => {
+            snapshot.forEach((childSnapshot) => {
+                const childKey = childSnapshot.key;
+                const childData = childSnapshot.val();
+
+                const x = document.createElement("p");
+                x.innerHTML = childData;
+                contentHolder.appendChild(x);
+            });
+        }, {onlyOnce: true});
+        }
         
 
-        </script>
+        myRefresh();
+    </script>
 </body>
 </html>
