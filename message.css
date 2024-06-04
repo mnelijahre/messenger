@@ -6,6 +6,23 @@
    License: none (public domain)
 */
 
+
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+
+*{
+    box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+  * {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -23,10 +40,11 @@ time, mark, audio, video {
 	padding: 0;
 	border: 0;
 	font-size: 100%;
-    font-family: "Anton", sans-serif;
+    font-family: "Roboto Mono", monospace;
     font-weight: 400;
     font-style: normal;
 	vertical-align: baseline;
+    box-sizing: border-box;
 }
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure, 
@@ -53,8 +71,85 @@ table {
 }
 /*break*/
 
+
+#pageHeader{
+    grid-area: header;
+}
+#holder{
+    background: black;
+    display: grid;
+    height: 100vh;
+    grid-template-areas: 'header'
+    'contentArea'
+    'inputArea';
+    grid-template-rows: 1fr 50fr 10fr;
+    overflow: hidden;
+}
+#contentHolder{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+    padding: 2vh;
+    grid-area: contentArea;
+    overflow-y: scroll;
+}
 .dataRow {
     color: rgb(0, 0, 0);
     display: flex;
-    gap: 10vw;
+    flex-direction: row;
+    gap: 2vw;
+    justify-content: start;
+    background: gray;
+    padding: 1vw;
+    border-radius: 5vw;
+}
+.datumName{
+    font-weight: bold;
+    color: black;
+    width: 20%;
+}
+
+.datumContent{
+    color: white;
+    overflow-wrap: break-word;
+    width: 70%;
+}
+
+#contentInput{
+    width: 100%;
+    color: green;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 2vw;
+    font-size: 1rem;
+    overflow-wrap: break-word;
+    grid-area: inputArea;
+}
+
+#contentInput:focus{
+    outline: none;
+}
+
+#contentSubmitButton{
+    display: none;
+}
+
+
+@media (min-width: 600px){
+    #contentHolder{
+        width: 600px;
+    }
+    #holder{
+        grid-template-areas: 'a header b'
+    'a contentArea b'
+    'a inputArea b';
+    grid-template-columns: auto 600px auto;
+    }
+    #a{
+        grid-area: a;
+    }
+    #b{
+        grid-area: b;
+    }
 }

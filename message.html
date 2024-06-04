@@ -9,43 +9,49 @@
 
 </head>
 <body>
-    <h1 id="pageHeader">Works</h1>
-    <div id="contentHolder"></div>
-    <form id="myForm">
-        <input type="text" id="contentInput">
-        <button id="contentSubmitButton">Send</button>
-    </form>
+    <div id="holder">
+        <div id="a"></div>
+        <div id="b"></div>
+        <h1 id="pageHeader">Works</h1>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        <div id="contentHolder"></div>
+        <form id="myForm">
+            <input type="text" id="contentInput" autocomplete="off">
+            <button id="contentSubmitButton">Send</button>
+        </form>
+    </div>
     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <script type="module">
-    
+
         /*=====================================================*/
     
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -69,7 +75,7 @@
         
         /*=====================================================*/
         
-        var initLoad = true;
+        var firstLoad = true;
         var lastSeenKey = null;
         pageHeader.innerHTML = "Welcome " + localStorage.getItem("user");
 
@@ -84,6 +90,9 @@
 
         function contentSubmit(){
             var data = contentInput.value;
+            if (data == ""){
+                return;
+            }
             var x;
             get(child(dbref, 'counter')).then((snapshot) =>{
                 if (!snapshot.exists()){
@@ -100,12 +109,13 @@
                 
             }).then(async(x)=>{ //slight fix could be implemented here to make it lag less
                 numCurTexts = x,
-                await update(ref(db, 'texts'), {
-                    [x]: contentInput.value
+                await update(ref(db, 'texts/' + x), {
+                    val: contentInput.value,
+                    name: localStorage.getItem("user")
                 })
                 contentInput.value = ""
             })
-    
+
             myRefresh();
         }
 
@@ -129,10 +139,11 @@
         async function myRefresh(){
             const snapshot = await get(child(dbref, "texts"));
 
-            onValue(child(dbref, "texts"), (snapshot) => {
+            await onValue(child(dbref, "texts"), (snapshot) => {
             snapshot.forEach((childSnapshot) => {
                 const childKey = childSnapshot.key;
-                const childData = childSnapshot.val();
+                const childName = childSnapshot.val().name;
+                const childData = childSnapshot.val().val;
 
                 if(lastSeenKey == null || parseInt(childKey) > parseInt(lastSeenKey)){                    
                         lastSeenKey = childKey;
@@ -140,18 +151,38 @@
                         const datumName = document.createElement("b");
                         const datumContent = document.createElement("p");
                         div.classList.add("dataRow")
+                        datumName.classList.add("datumName")
+                        datumContent.classList.add("datumContent")
                         div.appendChild(datumName);
                         div.appendChild(datumContent);
-                        datumName.innerHTML = localStorage.getItem("user");
+                        datumName.innerHTML = childName;
                         datumContent.innerHTML = childData;
                         
                         contentHolder.appendChild(div);
                     
                 
-                }
+                    }
+                });
             });
-        });
-        }
+                if (firstLoad == true){
+                    setTimeout(()=>{
+                    const scrollableDiv = document.getElementById("contentHolder");
+                    const lastElement = scrollableDiv.lastElementChild;
+                    lastElement.scrollIntoView({ behavior:"instant" });
+                    firstLoad = false;
+                }, 150);
+                }else{
+                    setTimeout(()=>{
+                    const scrollableDiv = document.getElementById("contentHolder");
+                    const lastElement = scrollableDiv.lastElementChild;
+                    lastElement.scrollIntoView({ behavior:"smooth" });
+                }, 150);
+                }
+                
+            }
+            
+
+        
         
 
         myRefresh();
