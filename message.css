@@ -79,11 +79,17 @@ table {
     background: black;
     display: grid;
     height: 100vh;
+    padding: 0px 0px 0px 0px;
     grid-template-areas: 'header'
     'contentArea'
     'inputArea';
-    grid-template-rows: 1fr 50fr 10fr;
+    grid-template-rows: 5vh 90vh 5vh;
     overflow: hidden;
+}
+#myForm{
+    display: flex;
+    height: 100%;
+    flex-direction: row;
 }
 #contentHolder{
     position: relative;
@@ -119,8 +125,8 @@ table {
 #contentInput{
     width: 100%;
     color: green;
-    border: 1px solid black;
-    border-radius: 5px;
+    border: none;
+    border-radius: 10px 0px 0px 10px;
     padding: 2vw;
     font-size: 1rem;
     overflow-wrap: break-word;
@@ -132,6 +138,13 @@ table {
 }
 
 #contentSubmitButton{
+    background: white;
+    border: 0px solid black;
+    border-radius: 0px 10px 10px 0px;
+
+
+}
+#a, #b{
     display: none;
 }
 
@@ -139,6 +152,9 @@ table {
 @media (min-width: 600px){
     #contentHolder{
         width: 600px;
+    }
+    #contentInput{
+        border-radius: 10px 10px 0px 0px;
     }
     #holder{
         grid-template-areas: 'a header b'
@@ -151,5 +167,11 @@ table {
     }
     #b{
         grid-area: b;
+    }
+    #a, #b{
+        display: block;
+    }
+    #contentSubmitButton{
+        display: none;
     }
 }

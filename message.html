@@ -175,8 +175,9 @@
                     setTimeout(()=>{
                     const scrollableDiv = document.getElementById("contentHolder");
                     const lastElement = scrollableDiv.lastElementChild;
+                    console.log(lastElement)
                     lastElement.scrollIntoView({ behavior:"smooth" });
-                }, 150);
+                }, 50);
                 }
                 
             }
