@@ -137,6 +137,9 @@
 
 
         async function myRefresh(){
+            if (localStorage.getItem("user")=="undefined"){
+                window.location.href = "index.html";
+            }
             const snapshot = await get(child(dbref, "texts"));
 
             await onValue(child(dbref, "texts"), (snapshot) => {
