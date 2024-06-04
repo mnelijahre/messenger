@@ -12,7 +12,7 @@
     <div id="contentHolder">
 
     </div>
-    <form>
+    <form id="myForm">
         <input type="text" id="contentInput">
         <button id="contentSubmitButton">Send</button>
     </form>
@@ -34,73 +34,69 @@
         };
         const app = initializeApp(firebaseConfig);
         const db = getDatabase();
-        const dbrefTwo = ref(db);
-        const dbref = ref(db, "/content");
+        const dbref = ref(db);
 
         
     
     
         /*=====================================================*/
-        var pageHeader = document.querySelector("#pageHeader");
-        const contentHolder = document.querySelector("#contentHolder");
-        var counter = -1;
+        
+
         pageHeader.innerHTML = "Welcome " + localStorage.getItem("user");
 
         const contentInput = document.querySelector("#contentInput");
         const contentSubmitButton = document.querySelector("#contentSubmitButton");
-        var counter = -1;
+        const form = document.getElementById("myForm");
+        
+        function handleForm(event) { event.preventDefault(); } 
+        form.addEventListener('submit', handleForm);
 
+        var numCurTexts = 0;
 
         function contentSubmit(){
-            get(child(dbrefTwo, "counter/val")).then(
-                
-                (snapshot)=>{
-                    if (snapshot.val() == null){
-                        set(child(dbrefTwo, "counter"),{
-                            val: 1
-                        })
-                    }else{
-                        console.log(snapshot.val());
-                        
-                        counter = snapshot.val();
-                        var temp = 1 + parseInt(counter);
-                        set(child(dbrefTwo, "counter"),{
-                            val: temp
-                        }).then(
-                            update(child(dbrefTwo, "content/"), {
-                        [counter]: localStorage.getItem('user') + " : " + contentInput.value
+            var data = contentInput.value;
+            var x;
+            get(child(dbref, 'counter')).then((snapshot) =>{
+                if (!snapshot.exists()){
+                    set(ref(db, 'counter'),{
+                        val: 0
                     })
-                        )
-                        
-                    }
-                    
+                    return 0
+                }else{
+                    set(ref(db, 'counter'),{
+                        val: snapshot.val().val + 1
+                    })
                 }
+                return snapshot.val().val + 1 //this is bad but it works
                 
-            ).then(
-                myRefresh()//do something here
-            )
-
-
-            if (contentInput.value == ""){
-                return;
-            }
-
-            
+            }).then((x)=>{
+                numCurTexts = x,
+                console.log(contentInput.value),
+                update(ref(db, 'texts'), {
+                    [x]: contentInput.value
+                })
+            })
+            myRefresh();
         }
 
         contentSubmitButton.addEventListener('click', contentSubmit);
 
 
         function myRefresh(){
-            contentHolder.innerHTML = "";
-            onValue(dbref, (snapshot) => {
+            var counter = 0;
+            //contentHolder.innerHTML = "";
+            onValue(child(dbref, "texts"), (snapshot) => {
             snapshot.forEach((childSnapshot) => {
+                
+                if (counter >= numCurTexts){
                 const childKey = childSnapshot.key;
                 const childData = childSnapshot.val();
 
                 const x = document.createElement("p");
                 x.innerHTML = childData;
                 contentHolder.appendChild(x);
+                }
+                counter++;
             });
         }, {onlyOnce: true});
         }
