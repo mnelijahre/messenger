@@ -41,7 +41,8 @@
     
         /*=====================================================*/
         
-
+        var initLoad = true;
+        var lastSeenKey = null;
         pageHeader.innerHTML = "Welcome " + localStorage.getItem("user");
 
         const contentInput = document.querySelector("#contentInput");
@@ -69,36 +70,52 @@
                 }
                 return snapshot.val().val + 1 //this is bad but it works
                 
-            }).then((x)=>{
+            }).then(async(x)=>{ //slight fix could be implemented here to make it lag less
                 numCurTexts = x,
-                console.log(contentInput.value),
-                update(ref(db, 'texts'), {
+                await update(ref(db, 'texts'), {
                     [x]: contentInput.value
                 })
+                contentInput.value = ""
             })
+    
             myRefresh();
         }
 
         contentSubmitButton.addEventListener('click', contentSubmit);
 
 
-        function myRefresh(){
-            var counter = 0;
-            //contentHolder.innerHTML = "";
+        function getNumCurTexts(){
+            return get(child(dbref, 'counter')).then((snapshot)=>{
+                if (!snapshot.exists()){
+                    set(ref(db, 'counter'),{
+                        val: 0
+                    })
+                    return 0
+                }
+                return snapshot.val().val
+            })
+        }
+
+
+
+        async function myRefresh(){
+            const snapshot = await get(child(dbref, "texts"));
+
             onValue(child(dbref, "texts"), (snapshot) => {
             snapshot.forEach((childSnapshot) => {
-                
-                if (counter >= numCurTexts){
                 const childKey = childSnapshot.key;
                 const childData = childSnapshot.val();
 
-                const x = document.createElement("p");
-                x.innerHTML = childData;
-                contentHolder.appendChild(x);
+                if(lastSeenKey == null || parseInt(childKey) > parseInt(lastSeenKey)){                    
+                        lastSeenKey = childKey;
+                        const x = document.createElement("p");
+                        x.innerHTML = localStorage.getItem("user")+ " : " + childData;
+                        contentHolder.appendChild(x);
+                    
+                
                 }
-                counter++;
             });
-        }, {onlyOnce: true});
+        });
         }
         
 
