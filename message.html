@@ -4,19 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="message.css">
     <!--<meta http-equiv="refresh" content="2" />-->
 
 </head>
 <body>
     <h1 id="pageHeader">Works</h1>
-    <div id="contentHolder">
-
-    </div>
+    <div id="contentHolder"></div>
     <form id="myForm">
         <input type="text" id="contentInput">
         <button id="contentSubmitButton">Send</button>
     </form>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
     <script type="module">
     
         /*=====================================================*/
@@ -39,6 +66,7 @@
         
     
     
+        
         /*=====================================================*/
         
         var initLoad = true;
@@ -108,9 +136,16 @@
 
                 if(lastSeenKey == null || parseInt(childKey) > parseInt(lastSeenKey)){                    
                         lastSeenKey = childKey;
-                        const x = document.createElement("p");
-                        x.innerHTML = localStorage.getItem("user")+ " : " + childData;
-                        contentHolder.appendChild(x);
+                        const div = document.createElement("div");
+                        const datumName = document.createElement("b");
+                        const datumContent = document.createElement("p");
+                        div.classList.add("dataRow")
+                        div.appendChild(datumName);
+                        div.appendChild(datumContent);
+                        datumName.innerHTML = localStorage.getItem("user");
+                        datumContent.innerHTML = childData;
+                        
+                        contentHolder.appendChild(div);
                     
                 
                 }
