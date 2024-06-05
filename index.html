@@ -8,6 +8,8 @@
 </head>
 <body>
     <div id="formDiv">
+        <img id="funnyImg" class="clear" src="https://s.yimg.com/ny/api/res/1.2/7KWG3rOwJGx.GSU8qNxU9g--/YXBwaWQ9aGlnaGxhbmRlcjt3PTYxODtoPTQxMg--/https://media.zenfs.com/en_US/News/TheWrap/James_Van_Der_Beek_8216Crying-dc1a3761465068a6f2cf7febf8424f86" alt="" srcset="">
+
         <div class="formRow">
             <h4>Username</h4>
             <input type="text" id="usernameInput">
@@ -19,6 +21,7 @@
         <div class="formRow2">
             <button id="registerBtn">Register</button>
             <button id="loginBtn">Login</button>
+            <button id="forgotPass">Forgot Password</button>
         </div>
 
     </div>
@@ -49,6 +52,20 @@
     var passwordInput = document.querySelector("#passwordInput");
     var registerBtn = document.querySelector('#registerBtn');
     var loginBtn = document.querySelector('#loginBtn');
+
+    var forgotPass = document.querySelector("#forgotPass");
+    var funnyImg = document.querySelector("#funnyImg");
+    forgotPass.addEventListener('click', forgotPasswordFunction);
+    var count = 0;
+    function forgotPasswordFunction(){
+        funnyImg.classList.remove("clear");
+        
+        setTimeout(()=>{
+            funnyImg.classList.add("clear");
+            forgotPass.classList.add("clear");
+        }, 2000);
+
+    }
 
     function register(){
         if (usernameInput.value == "" && passwordInput.value == ""){

@@ -12,7 +12,9 @@
     <div id="holder">
         <div id="a"></div>
         <div id="b"></div>
-        <h1 id="pageHeader">Works</h1>
+        <h1 id="pageHeader">
+            <button id="logOutButton">Log Out</button>
+        </h1>
 
         <div id="contentHolder"></div>
         <form id="myForm">
@@ -77,7 +79,6 @@
         
         var firstLoad = true;
         var lastSeenKey = null;
-        pageHeader.innerHTML = "Welcome " + localStorage.getItem("user");
 
         const contentInput = document.querySelector("#contentInput");
         const contentSubmitButton = document.querySelector("#contentSubmitButton");
@@ -87,6 +88,14 @@
         form.addEventListener('submit', handleForm);
 
         var numCurTexts = 0;
+
+        const logOutButton = document.querySelector("#logOutButton");
+        logOutButton.addEventListener("click", logOut);
+        function logOut(){
+            localStorage.removeItem("user");
+            myRefresh();
+        }
+
 
         function contentSubmit(){
             var data = contentInput.value;

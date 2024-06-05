@@ -6,6 +6,17 @@
    License: none (public domain)
 */
 
+:root{
+    --one: rgb(17, 109, 110);
+    --two: rgb(50, 30, 30);
+    --three: rgb(78, 54, 54);
+    --four: rgb(205, 24, 24);
+    --white: rgb(0,0,0);
+}
+*{
+    box-sizing: border-box;
+}
+
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -53,15 +64,23 @@ table {
 }
 /*break*/
 
+#funnyImg{
+    width: 100px;
+    height: 100px;
+}
+.clear{
+    display: none;
+}
 #formDiv{
-    height: 100vh;
-    width: 100vw;
-    background: rgb(197, 197, 197);
-    padding: 5vw;
+    height: 75vw;
+    width: 75vw;
+    background: var(--three);
+    padding: 10vw;
     display: flex;
     justify-content: center;
-    align-items: start;
+    align-items: center;
     flex-direction: column;
+    border-radius: 50%;
 }
 
 .formRow{
@@ -81,7 +100,7 @@ table {
     font-weight: 400;
     font-style: normal;
     padding: 10px;
-    background: white;
+    background: var(--one);
     border-radius: 10px;
     border: 0px;
 
@@ -96,3 +115,12 @@ input{
     font-style: normal;
 }
 
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+    background-color: var(--one);
+}
