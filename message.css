@@ -74,7 +74,16 @@ table {
 
 #pageHeader{
     grid-area: header;
-    background: white;
+    border-bottom: 1.5px solid purple;
+    justify-content: end;
+    padding-right: 5vw;
+    align-items: center;
+    display: flex;
+}
+#pageHeader button{
+    color: white;
+    background: none;
+    border: 1px dashed white;
 }
 #holder{
     background: black;
@@ -85,8 +94,9 @@ table {
     'contentArea'
     'inputArea';
     grid-template-rows: 5vh auto 5vh;
-    padding-bottom: 5vh;
+    padding: 0vh 0vw 5vh 0vw;
     overflow: hidden;
+
 }
 #myForm{
     display: flex;
@@ -110,13 +120,11 @@ table {
 .datumName{
     font-weight: bold;
     color: rgb(255, 0, 0);
-    width: 10em;
 }
 
 .datumContent{
     color: white;
     overflow-wrap: break-word;
-    width: calc(100% - 15rem);
 }
 
 #contentInput{
