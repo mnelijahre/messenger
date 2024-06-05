@@ -5,24 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dark Net Messenger</title>
     <link rel="stylesheet" href="style.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
 </head>
 <body>
     <h1 id="title">Dark Net Messenger</h1>
     <div id="formDiv">
-        <div class="formRow">
-            <h4>Username</h4>
-            <input type="text" id="usernameInput">
+        <div id="thing">
+            <div class="formRow">
+                <h4>Username</h4>
+                <input type="text" id="usernameInput">
+            </div>
+            <div class="formRow">
+                <h4>Password</h4>
+                <input type="text" id="passwordInput">
+            </div>
         </div>
-        <div class="formRow">
-            <h4>Password</h4>
-            <input type="text" id="passwordInput">
-        </div>
+        
         <div class="formRow2">
             <button id="registerBtn">Register</button>
             <button id="loginBtn">Login</button>
             <button id="forgotPass">Forgot Password</button>
         </div>
+        <h1 id="helpText"></h1>
 
     </div>
     <h1 id="footerTitle">Do not use or share sensitive data or passwords</h1>
@@ -55,24 +58,26 @@
     var registerBtn = document.querySelector('#registerBtn');
     var loginBtn = document.querySelector('#loginBtn');
 
+    const helpText = document.querySelector("#helpText");
     var forgotPass = document.querySelector("#forgotPass");
     var funnyImg = document.querySelector("#funnyImg");
     forgotPass.addEventListener('click', forgotPasswordFunction);
     var count = 0;
-    const footerTitle = document.querySelector("footerTitle");
+    const footerTitle = document.querySelector("#footerTitle");
     function forgotPasswordFunction(){
         forgotPass.classList.add("clear");
         footerTitle.innerHTML = "Do not forget your password";
+        console.log(1);
     }
 
     function register(){
         if (usernameInput.value == "" && passwordInput.value == ""){
-            alert("Must have at least one character");
+            helpText.innerHTML = "Problem: empty user/pass";
         }else {
             get(child(dbref, "Accounts/" + usernameInput.value.toLowerCase())).then(
                 (snapshop)=>{
                     if (snapshop.exists()){
-                        alert("Existing username");
+                        helpText.innerHTML = ("Existing username");
                     }else{
                         set(child(dbref, "Accounts/" + usernameInput.value.toLowerCase()),{
                             password: passwordInput.value
@@ -87,7 +92,7 @@
 
     function login(){
         if (usernameInput.value == "" && passwordInput.value == ""){
-            alert("Must have at least one character");
+            helpText.innerHTML = ("Must have at least one character");
         }else {
             var exists = false;
             get(child(dbref, "Accounts/" + usernameInput.value.toLowerCase())).then(
@@ -99,7 +104,7 @@
                             window.location.href = "message.html";
 
                         }else{
-                            alert("wrong password");
+                            helpText.innerHTML = ("wrong password");
                         }
                     }
                 }
@@ -107,7 +112,7 @@
             ).then(
                 ()=>{
                     if (exists == false){
-                alert("user does not exist");
+                helpText.innerHTML = ("user does not exist");
             }
                 }
             )

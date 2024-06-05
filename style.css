@@ -101,7 +101,6 @@ body{
     height: 450px;
     width: 450px;
     background: var(--three);
-    padding: 10vw;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -111,15 +110,16 @@ body{
 
 .formRow{
     display: flex;
-    gap: 5vw;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 .formRow2{
     justify-content: center;
     display: flex;
-    width: 100vw;
-    gap: 5vw;
-    padding: 3vw;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 1rem;
 }
 .formRow2 button{
     font-family: "Anton", sans-serif;
@@ -146,9 +146,13 @@ button, h1{
     color: white;
 }
 
-@media screen and (min-width: 600px){
+#helpText{
+    padding-top: 2rem;
+}
+
+@media screen and (max-width: 600px){
     #formDiv{
-        width: 450px;
-        height: 450px;
+        width: 75vw;
+        height: 75vw;
     }
 }
