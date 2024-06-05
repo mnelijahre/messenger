@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bazinga Messenger</title>
+    <title>Dark Net Messenger</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <h1 id="title">Dark Net Messenger</h1>
     <div id="formDiv">
-
         <div class="formRow">
             <h4>Username</h4>
             <input type="text" id="usernameInput">
@@ -24,6 +24,8 @@
         </div>
 
     </div>
+    <h1 id="footerTitle">Do not use or share sensitive data or passwords</h1>
+
 </body>
 
 <script type="module">
@@ -56,10 +58,10 @@
     var funnyImg = document.querySelector("#funnyImg");
     forgotPass.addEventListener('click', forgotPasswordFunction);
     var count = 0;
+    const footerTitle = document.querySelector("footerTitle");
     function forgotPasswordFunction(){
-        
-            forgotPass.classList.add("clear");
-
+        forgotPass.classList.add("clear");
+        footerTitle.innerHTML = "Do not forget your password";
     }
 
     function register(){
