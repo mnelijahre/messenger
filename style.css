@@ -8,8 +8,8 @@
 
 :root{
     --one: rgb(0, 0, 0);
-    --two: rgb(50, 30, 30);
-    --three: rgb(78, 54, 54);
+    --two: rgb(221, 0, 255);
+    --three: rgb(139, 34, 139);
     --four: rgb(205, 24, 24);
     --white: rgb(0,0,0);
 }
