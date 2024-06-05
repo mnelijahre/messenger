@@ -98,8 +98,8 @@ body{
 
 
 #formDiv{
-    height: 75vw;
-    width: 75vw;
+    height: 450px;
+    width: 450px;
     background: var(--three);
     padding: 10vw;
     display: flex;
