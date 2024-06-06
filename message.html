@@ -14,6 +14,7 @@
         <div id="b"></div>
         <h1 id="pageHeader">
             <button>Test</button>
+            <input type="text" id="testText">
             <button id="logOutButton">Log Out</button>
         </h1>
 
@@ -90,6 +91,9 @@
 
         var numCurTexts = 0;
 
+        var channel = "default";
+        var lastSeenChannel = "";
+
         const logOutButton = document.querySelector("#logOutButton");
         logOutButton.addEventListener("click", logOut);
         function logOut(){
@@ -97,6 +101,15 @@
             myRefresh();
         }
 
+        const testText = document.querySelector("#testText");
+        
+        testText.addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+                channel = testText.value;
+                console.log(channel);
+                myRefresh();
+            }
+            });
 
         function contentSubmit(){
             var data = contentInput.value;
@@ -104,14 +117,14 @@
                 return;
             }
             var x;
-            get(child(dbref, 'counter')).then((snapshot) =>{
+            get(child(dbref, 'channels/' + channel + '/counter')).then((snapshot) =>{
                 if (!snapshot.exists()){
-                    set(ref(db, 'counter'),{
+                    set(ref(db, 'channels/' + channel + '/counter'),{
                         val: 0
                     })
                     return 0
                 }else{
-                    set(ref(db, 'counter'),{
+                    set(ref(db, 'channels/' + channel + '/counter'),{
                         val: snapshot.val().val + 1
                     })
                 }
@@ -119,7 +132,7 @@
                 
             }).then(async(x)=>{ //slight fix could be implemented here to make it lag less
                 numCurTexts = x,
-                await update(ref(db, 'texts/' + x), {
+                await update(ref(db, 'channels/' + channel + '/texts/' + x), {
                     val: contentInput.value,
                     name: localStorage.getItem("user")
                 })
@@ -133,9 +146,9 @@
 
 
         function getNumCurTexts(){
-            return get(child(dbref, 'counter')).then((snapshot)=>{
+            return get(child(dbref, 'channels/' + channel + '/counter')).then((snapshot)=>{
                 if (!snapshot.exists()){
-                    set(ref(db, 'counter'),{
+                    set(ref(db, 'channels/' + channel + '/counter'),{
                         val: 0
                     })
                     return 0
@@ -150,16 +163,28 @@
             if (localStorage.getItem("user")==null){
                 window.location.href = "index.html";
             }
-            console.log(localStorage.getItem("user"));
-            const snapshot = await get(child(dbref, "texts"));
+            const snapshot = await get(child(dbref, 'channels/' + channel + "/texts"));
 
-            await onValue(child(dbref, "texts"), (snapshot) => {
-            snapshot.forEach((childSnapshot) => {
+            if (!snapshot.exists()){
+                contentHolder.innerHTML = "";
+            }
+
+            await onValue(child(dbref, 'channels/' + channel + "/texts"), (snapshot) => {
+                snapshot.forEach((childSnapshot) => {
+                    if (lastSeenChannel != channel){
+                        console.log("not seen");
+                        contentHolder.innerHTML = "";
+                    }
+                
                 const childKey = childSnapshot.key;
                 const childName = childSnapshot.val().name;
                 const childData = childSnapshot.val().val;
 
-                if(lastSeenKey == null || parseInt(childKey) > parseInt(lastSeenKey)){                    
+
+                console.log("haha");
+                if(lastSeenChannel != channel || lastSeenKey == null || parseInt(childKey) > parseInt(lastSeenKey)){ 
+                    console.log("reached refresh");   
+                        lastSeenChannel = channel;
                         lastSeenKey = childKey;
                         const div = document.createElement("div");
                         const datumName = document.createElement("b");
@@ -178,9 +203,13 @@
                     }
                 });
             });
+
                 if (firstLoad == true){
                     setTimeout(()=>{
                     const scrollableDiv = document.getElementById("contentHolder");
+                    if (scrollableDiv.innerHTML == ""){
+                        return;
+                    }
                     const lastElement = scrollableDiv.lastElementChild;
                     lastElement.scrollIntoView({ behavior:"instant" });
                     firstLoad = false;
@@ -188,8 +217,10 @@
                 }else{
                     setTimeout(()=>{
                     const scrollableDiv = document.getElementById("contentHolder");
+                    if (scrollableDiv.innerHTML == ""){
+                        return;
+                    }
                     const lastElement = scrollableDiv.lastElementChild;
-                    console.log(lastElement)
                     lastElement.scrollIntoView({ behavior:"smooth" });
                 }, 50);
                 }
