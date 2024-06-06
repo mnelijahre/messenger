@@ -105,11 +105,26 @@
         
         testText.addEventListener("keydown", function(event) {
             if (event.key === "Enter") {
-                channel = testText.value;
-                console.log(channel);
-                myRefresh();
+                if (testText.value == ""){
+                    testText.value = "default";
+                }
+                if (get(child(dbref, 'channels/' + testText.value)).then((snapshot)=>{
+                    if (snapshot.exists()){
+                        channel = testText.value;
+                        myRefresh().then(()=>{
+                            testText.value = "";
+
+                        });
+
+
+                    }
+
+                })){
+                }
+                
             }
-            });
+        }
+        )
 
         function contentSubmit(){
             var data = contentInput.value;
