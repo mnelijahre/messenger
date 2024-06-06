@@ -75,8 +75,8 @@ table {
 #pageHeader{
     grid-area: header;
     border-bottom: 1.5px solid purple;
-    justify-content: end;
-    padding-right: 5vw;
+    justify-content: space-between;
+    padding: 0vw 5vw;
     align-items: center;
     display: flex;
 }
