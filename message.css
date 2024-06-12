@@ -72,6 +72,7 @@ table {
 /*break*/
 
 
+
 #pageHeader{
     grid-area: header;
     border-bottom: 1.5px solid purple;
@@ -97,6 +98,9 @@ table {
     padding: 0vh 0vw 5vh 0vw;
     overflow: hidden;
 
+}
+#channelNote{
+    color: white;
 }
 #myForm{
     display: flex;
@@ -155,6 +159,7 @@ table {
 }
 
 
+
 @media (min-width: 600px){
     #contentHolder{
         width: 600px;
@@ -179,6 +184,9 @@ table {
         display: block;
     }
     #contentSubmitButton{
+        display: none;
+    }
+    #goButton{
         display: none;
     }
 }

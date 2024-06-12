@@ -18,8 +18,12 @@
         <div id="a"></div>
         <div id="b"></div>
         <h1 id="pageHeader">
-            <button>Test</button>
-            <input type="text" id="testText">
+            <p id="channelNote"></p>
+            <span>
+                <input type="text" id="testText">
+                <button id="goButton">></button>
+                <button id="addButton">+</button>
+            </span>
             <button id="logOutButton">Log Out</button>
         </h1>
 
@@ -99,6 +103,9 @@
         var channel = "default";
         var lastSeenChannel = "";
 
+        const channelNote = document.querySelector("#channelNote");
+        
+
         const logOutButton = document.querySelector("#logOutButton");
         logOutButton.addEventListener("click", logOut);
         function logOut(){
@@ -106,16 +113,18 @@
             myRefresh();
         }
 
+        const goButton = document.querySelector("#goButton");
+        goButton.addEventListener('click', handleGoButton);
+        const addButton = document.querySelector("#addButton");
+
         const testText = document.querySelector("#testText");
         
-        testText.addEventListener("keydown", function(event) {
-            if (event.key === "Enter") {
-                if (testText.value == ""){
-                    testText.value = "default";
-                }
-                if (get(child(dbref, 'channels/' + testText.value)).then((snapshot)=>{
+        function handleGoButton(){
+            
+            get(child(dbref, 'channels/' + testText.value)).then((snapshot)=>{
                     if (snapshot.exists()){
                         channel = testText.value;
+                        channelNote.innerHTML = channel;
                         myRefresh().then(()=>{
                             testText.value = "";
 
@@ -124,12 +133,48 @@
 
                     }
 
-                })){
-                }
+                })
+            
                 
-            }
+            
         }
-        )
+
+        testText.addEventListener("keydown", (event)=>{
+            if (event.key === "Enter") {
+                    if (testText.value == ""){
+                        testText.value = "default";
+                    }
+                    handleGoButton();
+                }}
+        );
+
+        addButton.addEventListener('click', handleAddButton);
+
+        function handleAddButton(){
+            var data = testText.value;
+            if (data == ""){
+                return;
+            }
+            channel = testText.value;
+            get(child(dbref, 'channels/' + testText.value)).then((snapshot)=>{
+                    if (!snapshot.exists()){
+                        console.log("TEST");
+                        set(ref(db, 'channels/' + channel + '/counter'),{
+                        val: 0
+                        }
+                    )
+                        
+                        myRefresh().then(()=>{
+                            testText.value = "";
+
+                        });
+
+
+                    }
+
+                })
+            myRefresh();
+        }
 
         function contentSubmit(){
             var data = contentInput.value;
@@ -185,6 +230,8 @@
             }
             const snapshot = await get(child(dbref, 'channels/' + channel + "/texts"));
 
+
+
             if (!snapshot.exists()){
                 contentHolder.innerHTML = "";
             }
@@ -192,7 +239,6 @@
             await onValue(child(dbref, 'channels/' + channel + "/texts"), (snapshot) => {
                 snapshot.forEach((childSnapshot) => {
                     if (lastSeenChannel != channel){
-                        console.log("not seen");
                         contentHolder.innerHTML = "";
                     }
                 
@@ -201,9 +247,7 @@
                 const childData = childSnapshot.val().val;
 
 
-                console.log("haha");
                 if(lastSeenChannel != channel || lastSeenKey == null || parseInt(childKey) > parseInt(lastSeenKey)){ 
-                    console.log("reached refresh");   
                         lastSeenChannel = channel;
                         lastSeenKey = childKey;
                         const div = document.createElement("div");
@@ -244,7 +288,8 @@
                     lastElement.scrollIntoView({ behavior:"smooth" });
                 }, 50);
                 }
-                
+                channelNote.innerHTML = channel;
+
             }
             
 
