@@ -95,17 +95,21 @@ body{
 #title{
     font-size: 3rem;
 }
-
+#signUpIn{
+    font-size: 2rem;
+    color: rgb(0, 0, 0);
+}
 
 #formDiv{
     height: 450px;
-    width: 450px;
+    width: 100vw;
     background: var(--three);
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    border-radius: 50%;
+    gap: 1rem;
+    border-radius: 100%;
 }
 
 .formRow{
@@ -125,11 +129,10 @@ body{
     font-family: "Anton", sans-serif;
     font-weight: 400;
     font-style: normal;
-    padding: 10px;
     background: var(--one);
     border-radius: 10px;
     border: 0px;
-
+    padding: 10px 10vw;
 }
 .formRow h4{
     width: 100px;
@@ -146,8 +149,24 @@ button, h1{
     color: white;
 }
 
+button{
+    cursor: pointer;
+}
+
+#createUser{
+    background: none;
+    border: none;
+    font-size: 1rem;
+    text-decoration: underline;
+}
+
 #helpText{
     padding-top: 2rem;
+}
+.formRow3{
+    justify-content: center;
+    align-items: center;
+    display: flex;
 }
 
 @media screen and (max-width: 600px){

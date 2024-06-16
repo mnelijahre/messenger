@@ -9,7 +9,8 @@
 <body>
     <h1 id="title">Dark Net Messenger</h1>
     <div id="formDiv">
-        <div id="thing">
+        <h1 id="signUpIn">Sign In</h1>
+        <form id="thing">
             <div class="formRow">
                 <h4>Username</h4>
                 <input type="text" id="usernameInput">
@@ -18,12 +19,14 @@
                 <h4>Password</h4>
                 <input type="text" id="passwordInput">
             </div>
-        </div>
+        </form>
         
         <div class="formRow2">
-            <button id="registerBtn">Register</button>
-            <button id="loginBtn">Login</button>
-            <button id="forgotPass">Forgot Password</button>
+            <button id="loginBtn">Log In</button>
+        </div>
+        <div class="formRow3">
+            <p id="newUser">New User? </p>
+            <button id="createUser">Create Account</button>
         </div>
         <h1 id="helpText"></h1>
 
@@ -57,17 +60,36 @@
     var passwordInput = document.querySelector("#passwordInput");
     var registerBtn = document.querySelector('#registerBtn');
     var loginBtn = document.querySelector('#loginBtn');
+    
+    var signIn = true;
 
+    const createUserButton = document.querySelector("#createUser");
+    const signUpIn = document.querySelector("#signUpIn");
+    const createUserBtn = document.querySelector("#createUser");
+
+    const formDiv = document.querySelector("#formDiv");
+    const newUserPrompt = document.querySelector("#newUser");
     const helpText = document.querySelector("#helpText");
-    var forgotPass = document.querySelector("#forgotPass");
     var funnyImg = document.querySelector("#funnyImg");
-    forgotPass.addEventListener('click', forgotPasswordFunction);
     var count = 0;
     const footerTitle = document.querySelector("#footerTitle");
-    function forgotPasswordFunction(){
-        forgotPass.classList.add("clear");
-        footerTitle.innerHTML = "Do not forget your password";
-        console.log(1);
+    
+    createUserButton.addEventListener('click', createUser);
+    function createUser(){
+        if (signIn == true){
+            loginBtn.innerHTML = "Create Account";
+            signUpIn.innerHTML = "Sign Up";
+            createUserBtn.innerHTML = "Log In";
+            newUserPrompt.innerHTML = "";
+            signIn = false;
+        }else{
+            loginBtn.innerHTML = "Log In";
+            signUpIn.innerHTML = "Sign In";
+            createUserBtn.innerHTML = "Create Account";
+            newUserPrompt.innerHTML = "New User?";
+            signIn = true;
+        }
+        
     }
 
     function register(){
@@ -122,9 +144,23 @@
 
     var testBtn = document.querySelector("#test");
 
+    formDiv.addEventListener("keydown", (event)=>{
+            if (event.key === "Enter") {
+                    loginHandler();
+                }}
+        );
 
-    registerBtn.addEventListener('click',register);
-    loginBtn.addEventListener('click', login);
+    //registerBtn.addEventListener('click',register);
+    function loginHandler(){
+        if (signIn == true){
+            login();
+        }else{
+            register();
+            createUser();
+        }
+    }
+    loginBtn.addEventListener('click', loginHandler);
+
 
 
   </script>
