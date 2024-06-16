@@ -199,7 +199,9 @@
                 numCurTexts = x,
                 await update(ref(db, 'channels/' + channel + '/texts/' + x), {
                     val: contentInput.value,
-                    name: localStorage.getItem("user")
+                    name: localStorage.getItem("user"),
+                    dateTime: new Date().toLocaleString()
+    
                 })
                 contentInput.value = ""
             })
@@ -245,20 +247,29 @@
                 const childKey = childSnapshot.key;
                 const childName = childSnapshot.val().name;
                 const childData = childSnapshot.val().val;
+                const childDateTime = childSnapshot.val().dateTime;
 
 
                 if(lastSeenChannel != channel || lastSeenKey == null || parseInt(childKey) > parseInt(lastSeenKey)){ 
                         lastSeenChannel = channel;
                         lastSeenKey = childKey;
                         const div = document.createElement("div");
+                        const divTwo = document.createElement("div");
                         const datumName = document.createElement("b");
+                        const datumDateTime = document.createElement("p");
                         const datumContent = document.createElement("p");
-                        div.classList.add("dataRow")
-                        datumName.classList.add("datumName")
-                        datumContent.classList.add("datumContent")
-                        div.appendChild(datumName);
+                         
+                        div.classList.add("dataRow");
+                        divTwo.classList.add("titleRow")
+                        datumName.classList.add("datumName");
+                        datumContent.classList.add("datumContent");
+                        datumDateTime.classList.add("datumDateTime");
+                        div.appendChild(divTwo);
+                        divTwo.appendChild(datumName);
+                        divTwo.appendChild(datumDateTime);
                         div.appendChild(datumContent);
                         datumName.innerHTML = childName;
+                        datumDateTime.innerHTML = childDateTime;
                         datumContent.innerHTML = childData;
                         
                         contentHolder.appendChild(div);

@@ -121,10 +121,21 @@ table {
     gap: 1vh;
     padding-top: 2vh;
 }
+.titleRow{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+}
+.datumDateTime{
+    color: rgb(101, 101, 101);
+    font-size: .8rem;
+}
 .datumName{
     font-weight: bold;
     color: rgb(255, 0, 0);
 }
+
 
 .datumContent{
     color: white;
