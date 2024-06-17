@@ -110,6 +110,7 @@
         logOutButton.addEventListener("click", logOut);
         function logOut(){
             localStorage.removeItem("user");
+            localStorage.removeItem("password");
             myRefresh();
         }
 

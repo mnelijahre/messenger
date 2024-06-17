@@ -10,25 +10,35 @@
     <h1 id="title">Dark Net Messenger</h1>
     <div id="formDiv">
         <h1 id="signUpIn">Sign In</h1>
-        <form id="thing">
-            <div class="formRow">
+
+        <form id="myForm">
+
+            <div class="formRowColumn">
                 <h4>Username</h4>
-                <input type="text" id="usernameInput">
+                <input type="text" id="usernameInput" placeholder="Username">
             </div>
-            <div class="formRow">
+            <div class="formRowColumn">
                 <h4>Password</h4>
-                <input type="text" id="passwordInput">
+                <input type="text" id="passwordInput" placeholder="Password">
             </div>
-        </form>
+            <div class="formRowRow" id="rememberDiv">
+                <input type="checkbox" name="" id="rememberUser">
+                <p>Remember Me?</p>
+            </div>
+            <div class="formRowRow">
+                <button id="loginBtn">Log In</button>
+            </div>
+    
+            <div class="formRow3">
+                <p id="newUser">New User? </p>
+                <button id="createUser">Create Account</button>
+            </div>     
+           
         
-        <div class="formRow2">
-            <button id="loginBtn">Log In</button>
-        </div>
-        <div class="formRow3">
-            <p id="newUser">New User? </p>
-            <button id="createUser">Create Account</button>
-        </div>
-        <h1 id="helpText"></h1>
+            <h1 id="helpText"></h1><!--problem here?-->
+        </form>
+
+        
 
     </div>
     <h1 id="footerTitle">Do not use or share sensitive data or passwords</h1>
@@ -63,6 +73,7 @@
     
     var signIn = true;
 
+    const rememberDiv = document.querySelector("#rememberDiv");
     const createUserButton = document.querySelector("#createUser");
     const signUpIn = document.querySelector("#signUpIn");
     const createUserBtn = document.querySelector("#createUser");
@@ -70,11 +81,16 @@
     const formDiv = document.querySelector("#formDiv");
     const newUserPrompt = document.querySelector("#newUser");
     const helpText = document.querySelector("#helpText");
+    const rememberUser = document.querySelector("#rememberUser");
     var funnyImg = document.querySelector("#funnyImg");
     var count = 0;
     const footerTitle = document.querySelector("#footerTitle");
     
-    createUserButton.addEventListener('click', createUser);
+    usernameInput.value = localStorage.getItem("user");
+    passwordInput.value = localStorage.getItem("password");
+
+   
+
     function createUser(){
         if (signIn == true){
             loginBtn.innerHTML = "Create Account";
@@ -82,16 +98,25 @@
             createUserBtn.innerHTML = "Log In";
             newUserPrompt.innerHTML = "";
             signIn = false;
+            rememberUser.checked = false;
+            rememberDiv.classList.add("clear");
         }else{
             loginBtn.innerHTML = "Log In";
             signUpIn.innerHTML = "Sign In";
             createUserBtn.innerHTML = "Create Account";
             newUserPrompt.innerHTML = "New User?";
             signIn = true;
-        }
-        
-    }
+            rememberUser.checked = false;
+            rememberDiv.classList.remove("clear");
 
+        }
+    };
+
+    createUserButton.addEventListener('click', function(event){
+        event.preventDefault();
+        createUser()}
+    );
+ 
     function register(){
         if (usernameInput.value == "" && passwordInput.value == ""){
             helpText.innerHTML = "Problem: empty user/pass";
@@ -151,7 +176,16 @@
         );
 
     //registerBtn.addEventListener('click',register);
-    function loginHandler(){
+    function loginHandler(event){
+        event.preventDefault();
+        if (rememberUser.checked){
+            localStorage.setItem("user", usernameInput.value.toLowerCase());
+            localStorage.setItem("password", passwordInput.value);
+
+        }else{
+            localStorage.removeItem("user");
+            localStorage.removeItem("password");
+        }
         if (signIn == true){
             login();
         }else{
@@ -159,7 +193,7 @@
             createUser();
         }
     }
-    loginBtn.addEventListener('click', loginHandler);
+    loginBtn.addEventListener('click', ()=>{loginHandler(event)});
 
 
 
